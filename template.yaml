@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  ChromiumVersion:
+    Type: String
+    Description: Version of Chromium
+Resources:
+  # See https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-resource-function.html
+  # for more info to see how to tune the lambda function configs based on your use case.
+  ChromiumLayer:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: chromium
+      Description: !Join [ "", [ "Chromium v", !Ref ChromiumVersion] ]
+      ContentUri: ./chromium.zip
+      RetentionPolicy: Retain
+Outputs:
+  ChromiumLayerExport:
+    Description: Layer arn of the Chromium layer
+    Value:
+      Ref: ChromiumLayer
+    Export:
+      Name: ChromiumLambdaLayer
